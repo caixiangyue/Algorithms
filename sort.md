@@ -64,4 +64,60 @@ void insertSort(vector<int> &arr) {
 空间复杂度：O(1)
 
 
+## 3. 归并排序
 
+``` rust
+pub fn merge_sort(arr: &mut Vec<i32>, tmp: &mut Vec<i32>, low: usize, mid: usize, high: usize) {
+    let mut i = low;
+    let mut j = mid + 1;
+    let mut k = 0;
+    while i <= mid && j <= high {
+        if arr[i] < arr[j] {
+            tmp[k] = arr[i];
+            i += 1;
+        } else {
+            tmp[k] = arr[j];
+            j += 1;
+        }
+        k += 1;
+    }
+
+    while i <= mid {
+        tmp[k] = arr[i];
+        k += 1;
+        i += 1;
+    }
+    while j <= high {
+        tmp[k] = arr[j];
+        k += 1;
+        j += 1;
+    }
+    i = low;
+    k = 0;
+    while i <= high {
+        arr[i] = tmp[k];
+        i += 1;
+        k += 1;
+    }
+}
+
+pub fn merge(arr: &mut Vec<i32>, tmp: &mut Vec<i32>) {
+    let mut mid;
+    let mut size = 1;
+    let mut low;
+    let mut high;
+    while size < arr.len() {
+        low = 0;
+        while low + size < arr.len() {
+            mid = low + size - 1;
+            high = low + 2 * size - 1;
+            if high > arr.len() - 1 {
+                high = arr.len() - 1;
+            }
+            merge_sort(arr, tmp, low, mid, high);
+            low += 2 * size
+        }
+        size <<= 1;
+    }
+}
+```
